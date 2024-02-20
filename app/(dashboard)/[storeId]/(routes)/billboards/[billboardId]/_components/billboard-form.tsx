@@ -8,9 +8,8 @@ import * as z from "zod";
 import toast from "react-hot-toast";
 import axios from "axios";
 
-import { Billboard, Store } from "@prisma/client";
+import { Billboard } from "@prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useOrigin } from "@/hooks/use-origin";
 
 import { Heading } from "@/components/ui/heading";
 import { Button } from "@/components/ui/button";
@@ -43,7 +42,6 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
 }) => {
   const params = useParams();
   const router = useRouter();
-  const origin = useOrigin();
 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
