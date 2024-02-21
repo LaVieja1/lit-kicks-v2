@@ -8,7 +8,7 @@ import * as z from "zod";
 import toast from "react-hot-toast";
 import axios from "axios";
 
-import { Category, Color, Image, Product, Size } from "@prisma/client";
+import { Brand, Color, Image, Product, Size } from "@prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Heading } from "@/components/ui/heading";
@@ -39,7 +39,7 @@ const formSchema = z.object({
   name: z.string().min(1),
   images: z.object({ url: z.string() }).array(),
   price: z.coerce.number().min(1),
-  categoryId: z.string().min(1),
+  brandId: z.string().min(1),
   colorId: z.string().min(1),
   sizeId: z.string().min(1),
   isFeatured: z.boolean().default(false).optional(),
@@ -54,14 +54,14 @@ interface ProductFormProps {
         images: Image[];
       })
     | null;
-  categories: Category[];
+  brands: Brand[];
   colors: Color[];
   sizes: Size[];
 }
 
 export const ProductForm: React.FC<ProductFormProps> = ({
   initialData,
-  categories,
+  brands,
   colors,
   sizes,
 }) => {
@@ -85,7 +85,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
         name: "",
         images: [],
         price: 0,
-        categoryId: "",
+        brandId: "",
         colorId: "",
         sizeId: "",
         isFeatured: false,
@@ -222,10 +222,10 @@ export const ProductForm: React.FC<ProductFormProps> = ({
             />
             <FormField
               control={form.control}
-              name="categoryId"
+              name="brandId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Category</FormLabel>
+                  <FormLabel>Brand</FormLabel>
                   <Select
                     disabled={loading}
                     onValueChange={field.onChange}
@@ -236,14 +236,14 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                       <SelectTrigger>
                         <SelectValue
                           defaultValue={field.value}
-                          placeholder="Select a category"
+                          placeholder="Select a brand"
                         />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {categories.map((category) => (
-                        <SelectItem key={category.id} value={category.id}>
-                          {category.name}
+                      {brands.map((brand) => (
+                        <SelectItem key={brand.id} value={brand.id}>
+                          {brand.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
