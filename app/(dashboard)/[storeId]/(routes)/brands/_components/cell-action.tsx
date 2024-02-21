@@ -16,10 +16,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { AlertModal } from "@/components/modals/alert-modal";
 
-import { CategoryColumn } from "./colums";
+import { BrandColumn } from "./colums";
 
 interface CellActionProps {
-  data: CategoryColumn;
+  data: BrandColumn;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
@@ -31,17 +31,17 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
 
   const onCopy = (id: string) => {
     navigator.clipboard.writeText(id);
-    toast.success("Category ID copied to clipboard.");
+    toast.success("Brand ID copied to clipboard.");
   };
 
   const onDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/${params.storeId}/categories/${data.id}`);
+      await axios.delete(`/api/${params.storeId}/brands/${data.id}`);
       router.refresh();
-      toast.success("Category deleted");
+      toast.success("Brand deleted");
     } catch (error) {
-      toast.error("Make sure you removed all products using this category");
+      toast.error("Make sure you removed all products using this brand");
     } finally {
       setLoading(false);
       setOpen(false);
@@ -73,9 +73,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
             Copy id
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() =>
-              router.push(`/${params.storeId}/categories/${data.id}`)
-            }
+            onClick={() => router.push(`/${params.storeId}/brands/${data.id}`)}
             className="hover:opacity-50 cursor-pointer"
           >
             <Edit className="mr-2 h-4 w-4" />

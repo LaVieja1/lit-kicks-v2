@@ -8,7 +8,7 @@ import * as z from "zod";
 import toast from "react-hot-toast";
 import axios from "axios";
 
-import { Billboard, Category } from "@prisma/client";
+import { Billboard, Brand } from "@prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Heading } from "@/components/ui/heading";
@@ -37,14 +37,14 @@ const formSchema = z.object({
   billboardId: z.string().min(1),
 });
 
-type CategoryFormValues = z.infer<typeof formSchema>;
+type BrandFormValues = z.infer<typeof formSchema>;
 
-interface CategoryFormProps {
-  initialData: Category | null;
+interface BrandFormProps {
+  initialData: Brand | null;
   billboards: Billboard[];
 }
 
-export const CategoryForm: React.FC<CategoryFormProps> = ({
+export const BrandForm: React.FC<BrandFormProps> = ({
   initialData,
   billboards,
 }) => {
@@ -54,12 +54,12 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const title = initialData ? "Edit category" : "Create category";
-  const description = initialData ? "Edit category" : "Add category";
-  const toastMessage = initialData ? "Category updated" : "Category created";
+  const title = initialData ? "Edit brand" : "Create brand";
+  const description = initialData ? "Edit brand" : "Add brand";
+  const toastMessage = initialData ? "Brand updated" : "Brand created";
   const action = initialData ? "Save changes" : "Create";
 
-  const form = useForm<CategoryFormValues>({
+  const form = useForm<BrandFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
       name: "",
@@ -67,19 +67,19 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
     },
   });
 
-  const onSubmit = async (data: CategoryFormValues) => {
+  const onSubmit = async (data: BrandFormValues) => {
     try {
       setLoading(true);
       if (initialData) {
         await axios.patch(
-          `/api/${params.storeId}/categories/${params.categoryId}`,
+          `/api/${params.storeId}/brands/${params.brandId}`,
           data
         );
       } else {
-        await axios.post(`/api/${params.storeId}/categories`, data);
+        await axios.post(`/api/${params.storeId}/brands`, data);
       }
       router.refresh();
-      router.push(`/${params.storeId}/categories`);
+      router.push(`/${params.storeId}/brands`);
       toast.success(toastMessage);
     } catch (error) {
       toast.error("Something went wrong");
@@ -91,14 +91,12 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
   const onDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(
-        `/api/${params.storeId}/categories/${params.categoryId}`
-      );
+      await axios.delete(`/api/${params.storeId}/brands/${params.brandId}`);
       router.refresh();
-      router.push(`/${params.storeId}/categories`);
-      toast.success("Category deleted");
+      router.push(`/${params.storeId}/brands`);
+      toast.success("Brand deleted");
     } catch (error) {
-      toast.error("Make sure you removed all products using this category");
+      toast.error("Make sure you removed all products using this brand");
     } finally {
       setLoading(false);
       setOpen(false);
@@ -142,7 +140,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
                   <FormControl>
                     <Input
                       disabled={loading}
-                      placeholder="Category name"
+                      placeholder="Brand name"
                       {...field}
                     />
                   </FormControl>

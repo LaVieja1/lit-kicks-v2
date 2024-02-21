@@ -2,11 +2,11 @@ import { format } from "date-fns";
 
 import prismadb from "@/lib/prismadb";
 
-import { CategoryClient } from "./_components/client";
-import { CategoryColumn } from "./_components/colums";
+import { BrandClient } from "./_components/client";
+import { BrandColumn } from "./_components/colums";
 
-const CategoriesPage = async ({ params }: { params: { storeId: string } }) => {
-  const categories = await prismadb.category.findMany({
+const BrandsPage = async ({ params }: { params: { storeId: string } }) => {
+  const brands = await prismadb.brand.findMany({
     where: {
       storeId: params.storeId,
     },
@@ -18,7 +18,7 @@ const CategoriesPage = async ({ params }: { params: { storeId: string } }) => {
     },
   });
 
-  const formattedCategories: CategoryColumn[] = categories.map((item) => ({
+  const formattedBrands: BrandColumn[] = brands.map((item) => ({
     id: item.id,
     name: item.name,
     billboardLabel: item.billboard.label,
@@ -28,10 +28,10 @@ const CategoriesPage = async ({ params }: { params: { storeId: string } }) => {
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4 p-8 pt-6">
-        <CategoryClient data={formattedCategories} />
+        <BrandClient data={formattedBrands} />
       </div>
     </div>
   );
 };
 
-export default CategoriesPage;
+export default BrandsPage;
