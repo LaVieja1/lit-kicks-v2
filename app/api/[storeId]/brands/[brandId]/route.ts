@@ -16,6 +16,9 @@ export async function GET(
       where: {
         id: params.brandId,
       },
+      include: {
+        billboard: true,
+      },
     });
 
     return NextResponse.json(brand);
